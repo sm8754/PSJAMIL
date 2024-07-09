@@ -1,0 +1,51 @@
+General:
+    comment: 
+    seed: 2023
+    fp16: True
+    precision: 16-mixed
+    multi_gpu_mode: dp
+    gpus: [0]
+    epochs: &epoch 50
+    grad_acc: 2
+    frozen_bn: False
+    patience: 10
+    server: train #train OR test
+    log_path: 'logs\TCGA-Liver'
+
+Data:
+    dataset_name: camel_data
+    data_shuffle: True
+    data_dir: 'dataset\TCGA-Liver\pt_files'
+    label_dir: 'dataset\TCGA-Liver\dataset_csv\'
+    fold: 0
+    nfold: 5
+    type: 1.0
+
+    train_dataloader:
+        batch_size: 1 
+        num_workers: 0
+
+    test_dataloader:
+        batch_size: 1
+        num_workers: 0
+
+Model:
+    name: PSJA-MIL
+    n_classes: 2
+
+
+Optimizer:
+    opt: lookahead_radam #lookahead_radam OR lookahead_sgd
+    lr: 0.0001
+    opt_eps: null 
+    opt_betas: null
+    momentum: null 
+    weight_decay: 0.00001
+
+Loss:
+    base_loss: PSJALoss
+    a_margin: 0.25 #r_a
+    L2_lambda: 0.001 #r_L2
+    norm_scale: 5 #t
+    contrast_hyper: 0.5 #τ
+
